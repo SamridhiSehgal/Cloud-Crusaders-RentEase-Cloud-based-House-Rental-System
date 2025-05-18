@@ -1,0 +1,7 @@
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.3); /* Light transparent overlay */
+    backdrop-filter: blur(4px); /* Add a subtle blur effect */
+    z-index: 50; /* Ensures popup stays on top */
+}
