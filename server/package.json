@@ -1,9 +1,12 @@
 {
   "name": "server",
   "version": "1.0.0",
+  "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js",
+    "start": "node app.js"
   },
   "repository": {
     "type": "git",
@@ -15,17 +18,17 @@
     "url": "https://github.com/SamridhiSehgal/RentEase-React--Cloud-Base-House-Rental-System/issues"
   },
   "homepage": "https://github.com/SamridhiSehgal/RentEase-React--Cloud-Base-House-Rental-System#readme",
-  "description": "",
   "dependencies": {
-    "@faker-js/faker": "^9.7.0",
+    "@faker-js/faker": "^9.8.0",
+    "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
-    "faker": "^6.6.6",
     "mongodb": "^6.16.0",
-    "mongoose": "^8.14.2",
+    "mongoose": "^8.15.0",
     "morgan": "^1.10.0",
     "path": "^0.12.7"
   }

@@ -1,52 +1,97 @@
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
 
-const tenantSchema=new mongoose.Schema({
-    username:{
-        type:String,
-        required:true
+const roomSchema = new mongoose.Schema({
+    location: {
+        type: String,
+        // required: true,
     },
-    email:{
-        type:String,
-        required:true,
-        unique:true,
+    rentPrice: {
+        type: Number,
+        required: true,
     },
-    contact:{
-        type:Number,
-        required:true,
-        unique:true,
+    parking: {
+        type: Boolean,
+        default: false,
     },
-    gender:{
-        type:String,
-        enum:['Male','Female','Others']
+    wifi: {
+        type: Boolean,
+        default: false,
     },
-    password:{
-        type:String,
-        required:true,
+    purifier: {
+        type: Boolean,
+        default: false,
     },
-    //update at time of booking again form will show most details are field with login data if not logined then sighup or login first before booking
-    occupancyType: { 
-        type: String, 
-        enum: ['Student', 'Family', 'Job Holder', 'Single', 'PG'], 
-        required: true 
+    airConditoner: {
+        type: Boolean,
+        default: false,
     },
-    address:{
-        state:{
-            type:String,
-            required:true,
-        },
-        city:{
-            type:String,
-            required:true,
-        },
-        pincode:{
-            type:Number,
-            requied:true,
-        }
-    },
-    roomsRented: [{ 
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Room' 
+    images: [{
+        type: String, // URL of uploaded images
+        required: true,
     }],
-})
-const tenantModel=mongoose.Model('Tenant',tenantSchema);
-module.exports=tenantModel;
+    availability: {
+        type: Boolean,
+        default: true,
+    },
+    bhk: {
+        type: Number, // Number of Bedrooms, Hall, Kitchen
+        required: true,
+    },
+    size: {
+        legnth:{
+            type: Number, // Size in square feet
+            required: true,
+        },
+        width:{
+            type:Number,
+            required:true,
+        },
+    },
+    floor: {
+        type: String, // Example: "Ground out of 2", "3 out of 5"
+        required: true,
+    },
+    areaType: {
+        type: String,
+        enum: ['Super Area', 'Carpet Area', 'Build Area'],
+        required: true,
+    },
+    state:{
+        type:String,
+        required:true,
+    },
+    district:{
+        type:String,
+        required:true,
+    },
+    city: {
+        type: String, // City where the property is located
+        required: true,
+    },
+    areaLocality: {
+        type: String, // Locality of the property
+        required: true,
+    },
+    furnishingStatus: {
+        type: String,
+        enum: ['Furnished', 'Semi-Furnished', 'Unfurnished'],
+        required: true,
+    },
+    //use while prdeicition and filltering process
+    tenantPreferred: {
+        type: String, // Type of tenant preferred by owner or by agent
+        required: true,
+    },
+    bathroom: {
+        type: Number, // Number of bathrooms
+        required: true,
+    },
+    owner:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Owner' 
+    } 
+});
+
+const roomModel = mongoose.model('Room', roomSchema);
+
+module.exports = roomModel;

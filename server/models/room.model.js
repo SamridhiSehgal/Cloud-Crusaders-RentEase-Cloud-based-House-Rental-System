@@ -21,7 +21,7 @@ const roomSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    airConditoner: {
+    airConditioner: {
         type: Boolean,
         default: false,
     },
@@ -38,13 +38,13 @@ const roomSchema = new mongoose.Schema({
         required: true,
     },
     size: {
-        legnth:{
+        length: {
             type: Number, // Size in square feet
             required: true,
         },
-        width:{
-            type:Number,
-            required:true,
+        width: {
+            type: Number,
+            required: true,
         },
     },
     floor: {
@@ -56,13 +56,13 @@ const roomSchema = new mongoose.Schema({
         enum: ['Super Area', 'Carpet Area', 'Build Area'],
         required: true,
     },
-    state:{
-        type:String,
-        required:true,
+    state: {
+        type: String,
+        required: true,
     },
-    district:{
-        type:String,
-        required:true,
+    district: {
+        type: String,
+        required: true,
     },
     city: {
         type: String, // City where the property is located
@@ -77,21 +77,20 @@ const roomSchema = new mongoose.Schema({
         enum: ['Furnished', 'Semi-Furnished', 'Unfurnished'],
         required: true,
     },
-    //use while prdeicition and filltering process
     tenantPreferred: {
-        type: String, // Type of tenant preferred by owner or by agent
+        type: String, // Type of tenant preferred by owner or agent
         required: true,
     },
     bathroom: {
         type: Number, // Number of bathrooms
         required: true,
     },
-    owner:{
+    owner: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Owner' 
-    } 
+        ref: 'Owner',
+    },
 });
 
-const roomModel = mongoose.model('Room', roomSchema);
+const Room = mongoose.models.Room || mongoose.model('Room', roomSchema);
 
-module.exports = roomModel;
+module.exports = Room;

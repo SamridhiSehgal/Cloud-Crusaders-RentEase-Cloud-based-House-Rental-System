@@ -22,7 +22,7 @@ const ownerSchema = new mongoose.Schema({
         default: 'owner', //other one be agent...
     },
     rooms: [{ 
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         ref: 'Room' 
     }],
     tenants:[{ //each owner having tenant list

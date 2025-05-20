@@ -1,38 +1,46 @@
-// const { MongoClient, ServerApiVersion } = require('mongodb');
-// require('dotenv').config();
-
-// // const DB_PASS = process.env.DB_PASS;
-// // if (!DB_PASS) {
-// //     throw new Error("DB_PASS is not defined in the environment variables.");
-// // }
-
-// const uri = `mongodb+srv://RentEase_mongodb:rentease04@renteasecluster.fs68ztf.mongodb.net/?retryWrites=true&w=majority&appName=RentEaseCluster`;
-
-// const client = new MongoClient(uri, {
-//     serverApi: {
-//         version: ServerApiVersion.v1,
-//         strict: true,
-//         deprecationErrors: true,
-//     },
-// });
-
-// async function connectToDatabase() {
-//     try {
-//         await client.connect();
-//         console.log("Successfully connected to MongoDB!");
-//         return client;
-//     } catch (error) {
-//         console.error("Error connecting to MongoDB:", error);
-//         throw error;
-//     }
-// }
-// // connectToDatabase();
-
-// module.exports = { client, connectToDatabase };
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
-module.exports.connectToDatabase=()=>{
-    mongoose.connect('mongodb://localhost:27017/RentEase')
-.then(() => console.log('Database connected successfully...'))
-.catch(err => console.error('Database connection error:', err));
-}
+dotenv.config(); // Load environment variables
+
+const connectToDatabase = async () => {
+  const uri = process.env.MONGO_URI;
+
+  if (!uri) {
+    console.error('❌ Error: MONGO_URI is not defined in the .env file');
+    process.exit(1); // Exit the app if URI is missing
+  }
+
+  try {
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('✅ Successfully connected to MongoDB Atlas');
+  } catch (error) {
+    console.error('❌ Failed to connect to MongoDB:', error.message);
+    process.exit(1); // Exit the app on DB connection failure
+  }
+};
+
+module.exports = { connectToDatabase };
+/*const mongoose = require('mongoose');
+require('dotenv').config();
+
+module.exports.connectToDatabase = async () => {
+  const uri = process.env.MONGO_URI;
+  if (!uri) {
+    console.error('MONGO_URI not defined in .env');
+    process.exit(1); // Exit app if no URI
+  }
+  try {
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('Database connected successfully...');
+  } catch (err) {
+    console.error('Database connection error:', err);
+    process.exit(1); // Exit app on DB connection failure
+  }
+};*/
