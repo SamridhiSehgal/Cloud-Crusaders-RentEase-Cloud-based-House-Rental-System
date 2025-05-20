@@ -1,21 +1,48 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const TenantLoginPopup = ({ onClose }) => {
     const [isSignUp, setIsSignUp] = useState(false);
     const [formData, setFormData] = useState({ username: '', email: '', phone: '', password: '' });
-    const navigate=useNavigate();
+    const navigate = useNavigate();
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        //naviagte to tenant dashboard desgin the owner dashboard ma'am...think about it... what feature should be their and its graphic ui/ux....
-        navigate('/tenant/dashboard');
-        console.log(isSignUp ? 'Tenant Signing Up:' : 'Tenant Logging In:', formData);
-        onClose();
+        try {
+            let dataToSend;
+            if (isSignUp) {
+                dataToSend = formData;
+            } else {
+                dataToSend = {
+                    email: formData.email,
+                    password: formData.password,
+                };
+            }
+            console.log(dataToSend);
+            const response = await axios.post(
+                `http://localhost:3000/tenant/${isSignUp ? 'signup' : 'login'}`,
+                dataToSend
+            );
+            console.log(response);
+            if (response.status === 201 || response.status === 200) {
+                localStorage.setItem('tenant', response.data.token);
+                localStorage.setItem('tenantId', response.data.tenant._id);
+                alert(`${isSignUp ? "Tenant Signed Up" : "Tenant Logged In"} Successfully`);
+                navigate('/tenant/dashboard');
+                onClose();
+            } else {
+                alert(`${isSignUp ? "Tenant Sign Up" : "Tenant Login"} Failed`);
+            }
+        } catch (error) {
+            alert(`${isSignUp ? "Tenant Sign Up" : "Tenant Login"} Failed`);
+            console.error(error);
+        }
     };
 
     return (
@@ -40,7 +67,7 @@ const TenantLoginPopup = ({ onClose }) => {
                                 value={formData.username} 
                                 onChange={handleChange} 
                                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 text-sm" 
-                                required 
+                                required={isSignUp}
                             />
                         </div>
                     )}
@@ -53,7 +80,7 @@ const TenantLoginPopup = ({ onClose }) => {
                             value={formData.email} 
                             onChange={handleChange} 
                             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 text-sm" 
-                            required 
+                            required
                         />
                     </div>
                     {isSignUp && (
@@ -66,7 +93,7 @@ const TenantLoginPopup = ({ onClose }) => {
                                 value={formData.phone} 
                                 onChange={handleChange} 
                                 className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 text-sm" 
-                                required 
+                                required={isSignUp}
                             />
                         </div>
                     )}
@@ -79,7 +106,7 @@ const TenantLoginPopup = ({ onClose }) => {
                             value={formData.password} 
                             onChange={handleChange} 
                             className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-green-500 text-sm" 
-                            required 
+                            required
                         />
                     </div>
                     <button 

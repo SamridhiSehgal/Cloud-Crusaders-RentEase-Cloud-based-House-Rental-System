@@ -1,4 +1,5 @@
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
+
 const ownerSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -14,19 +15,19 @@ const ownerSchema = new mongoose.Schema({
         required: true,
     },
     phone: {
-        type: Number,
+        type: String, // Changed from Number to String
         required: true,
     },
     role: {
         type: String,
-        default: 'owner', //other one be agent...
+        default: 'owner',
     },
     rooms: [{ 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Room' 
     }],
-    tenants:[{ //each owner having tenant list
-        type:mongoose.Schema.Types.ObjectId,
+    tenants:[{
+        type: mongoose.Schema.Types.ObjectId,
         ref:'Tenant'
     }],
     rentalRequests: [{
@@ -50,14 +51,7 @@ const ownerSchema = new mongoose.Schema({
             default: Date.now
         }
     }],
-    // notifications: [{
-    //     message: String,
-    //     date: {
-    //         type: Date,
-    //         default: Date.now,
-    //     },
-    // }],
 });
 
-const ownerModel=mongoose.model('Owner', ownerSchema);
+const ownerModel = mongoose.model('Owner', ownerSchema);
 module.exports = ownerModel;

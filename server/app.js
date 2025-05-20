@@ -1,60 +1,37 @@
-const express=require('express');
-const app=express();
-const dotenv=require('dotenv');
-const morgan=require('morgan');
-const cookieParser = require('cookie-parser');
+// app.js
+const express = require('express');
+const cors = require('cors');
+const dotenv = require('dotenv');
+const connectDB = require('./db/db.config');
+// const authRoutes = require('./routes/auth.routes');
+const ownerRoutes=require('./routes/owner.routes');
+ const tenantRoutes = require('./routes/tenant.routes');
 
-const cors=require('cors');
 dotenv.config();
-const port=process.env.PORT;
-const path=require('path');
 
-const ownerRouter=require('./routes/owner.routes');
-const {connectToDatabase}=require('./db/db.config');
+const app = express();
+const PORT = 3000;
 
-connectToDatabase();
+// Connect to DB
+connectDB();
 
-app.set('view engine', 'ejs');
-// Set custom views folder
-app.set('views', path.join(__dirname, '../client/src/pages'));
-
-//middlewares...
+// Middleware
 app.use(cors({
-    origin:'http://localhost:5173',
-    credentials:true
+  origin: 'http://localhost:5173',
+  credentials: true // if you need to send cookies or auth headers
 }));
-app.use(cookieParser());
-app.use(morgan('dev'));//print request, route, responseStatus, timeTaken to send...
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
-app.use(express.static('public'));
 
-app.use('/owner',ownerRouter);
-//app.use('/tenant',tenantRouter);
+// Routes
+// app.use('/api/auth', authRoutes);
+app.use('/owner',ownerRoutes);
+app.use('/tenant', tenantRoutes);
 
-app.get('/check',(req,res)=>{
-    console.log('good to go..')
+// Root route
+app.get('/check', (req, res) => {
+  res.send('House Rental Backend is running');
+});
 
-    res.send('i am listeing');
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-app.listen(port,()=>{
-    console.log(`App is listening on port ${port}...`)
-})
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
